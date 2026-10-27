@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Reader makes reading easier with focused, word-by-word pacing, pictures, and spoken narration.">
+    <title>Reader — Read at Your Pace</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+            --background: #c9dfed;
+            --surface: rgba(255, 255, 255, 0.88);
+            --text: #0a0a0a;
+            --muted: rgba(51, 51, 51, 0.72);
+            --accent: #0099ea;
+            --accent-strong: #006da6;
+            --accent-soft: #e3eef5;
+            --border: #b4d0e1;
+            --hero-start: #006da6;
+            --hero-end: #0099ea;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #0a1922;
+                --surface: rgba(16, 24, 32, 0.92);
+                --text: #ffffff;
+                --muted: rgba(197, 190, 176, 0.78);
+                --accent: #33b5ff;
+                --accent-strong: #79ceff;
+                --accent-soft: #18232d;
+                --border: #263b48;
+                --hero-start: #005987;
+                --hero-end: #008ed9;
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 10% 12%, rgba(0, 153, 234, 0.18), transparent 28rem),
+                var(--background);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            font-size: 17px;
+            line-height: 1.65;
+        }
+
+        a { color: var(--accent-strong); }
+
+        header {
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--hero-start), var(--hero-end));
+            color: #ffffff;
+            padding: 1.1rem 1.25rem 5rem;
+        }
+
+        header::after {
+            content: "Aa";
+            position: absolute;
+            right: max(-1rem, calc((100vw - 1050px) / 2));
+            bottom: -4.5rem;
+            color: rgba(255, 255, 255, 0.09);
+            font-size: clamp(11rem, 28vw, 22rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.12em;
+            pointer-events: none;
+        }
+
+        .nav, .hero, main {
+            width: min(100% - 2rem, 980px);
+            margin-inline: auto;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand {
+            font-size: 1.15rem;
+            font-weight: 750;
+            letter-spacing: -0.02em;
+        }
+
+        nav a {
+            color: #ffffff;
+            margin-left: 1rem;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 0.25em;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding-top: clamp(4rem, 10vw, 7rem);
+        }
+
+        .eyebrow {
+            margin: 0 0 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 750;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            max-width: 720px;
+            margin: 0;
+            font-size: clamp(3rem, 9vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+        }
+
+        .hero-copy {
+            max-width: 590px;
+            margin: 1.5rem 0 0;
+            font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+        }
+
+        main { margin-block: -1.5rem 4rem; position: relative; z-index: 2; }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature, section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 14px 40px rgba(10, 54, 78, 0.10);
+            backdrop-filter: blur(14px);
+        }
+
+        .feature {
+            border-radius: 18px;
+            padding: 1.35rem;
+        }
+
+        .feature-icon {
+            display: grid;
+            width: 2.5rem;
+            height: 2.5rem;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-weight: 800;
+        }
+
+        .feature h2 { margin: 0.85rem 0 0.25rem; font-size: 1.1rem; }
+        .feature p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+        section {
+            border-radius: 20px;
+            margin-bottom: 1.25rem;
+            padding: clamp(1.4rem, 5vw, 2.5rem);
+        }
+
+        section > h2 { margin-top: 0; font-size: clamp(1.65rem, 4vw, 2.2rem); }
+        h2, h3 { line-height: 1.25; letter-spacing: -0.025em; }
+        h3 { margin-top: 1.9rem; }
+
+        .effective-date, .muted { color: var(--muted); }
+
+        footer {
+            color: var(--muted);
+            padding: 0 1rem 2.5rem;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            header { padding-bottom: 4rem; }
+            .features { grid-template-columns: 1fr; }
+            .nav { align-items: flex-start; }
+            nav { display: flex; flex-direction: column; align-items: flex-end; }
+            nav a { margin: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <div class="brand">Reader</div>
+            <nav aria-label="Page navigation">
+                <a href="#support">Support</a>
+                <a href="#privacy">Privacy</a>
+            </nav>
+        </div>
+
+        <div class="hero">
+            <p class="eyebrow">Read at your pace</p>
+            <h1>One word at a time.</h1>
+            <p class="hero-copy">Reader turns short stories into a calm, focused experience with adjustable pacing, optional pictures, and spoken narration.</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="features" aria-label="Reader features">
+            <article class="feature">
+                <div class="feature-icon" aria-hidden="true">1</div>
+                <h2>Focused reading</h2>
+                <p>Choose how many words appear at once and move through each story without distraction.</p>
+            </article>
+            <article class="feature">
+                <div class="feature-icon" aria-hidden="true">▶</div>
+                <h2>Hear each passage</h2>
+                <p>Use the best available American English system voice for optional narration.</p>
+            </article>
+            <article class="feature">
+                <div class="feature-icon" aria-hidden="true">↗</div>
+                <h2>Keep making progress</h2>
+                <p>Return to stories already in progress and continue from where you stopped.</p>
+            </article>
+        </div>
+
+        <section id="support">
+            <h2>Support</h2>
+            <p>Need help with Reader, narration, access to a reading pack, or a purchase? Email <a href="mailto:spencerhall31@gmail.com">spencerhall31@gmail.com</a>.</p>
+            <p class="muted">For purchase issues, you can also use Restore Purchases from Reader’s Settings screen.</p>
+        </section>
+
+        <section id="privacy">
+            <h2>Privacy Policy</h2>
+            <p class="effective-date">Effective October 27, 2026</p>
+            <p>This policy explains what information Reader stores or processes, how it is used, and the choices available to you.</p>
+
+            <h3>Information stored on your device</h3>
+            <p>Reader stores your app settings, reading progress, elapsed reading time, and completed-reading achievements on your device. This information lets the app remember your preferences and help you continue a story. Reader does not require you to create an account.</p>
+
+            <h3>Narration</h3>
+            <p>Reader uses Apple’s built-in speech synthesis to read story text aloud with a voice installed on your device. Reader does not record your voice or request microphone access. Available voices and voice downloads are managed through your device’s Apple settings.</p>
+
+            <h3>Purchases</h3>
+            <p>Reader offers in-app purchases and subscriptions through Apple’s StoreKit. Apple processes payment information and provides Reader with purchase and entitlement status so the app can unlock content and restore purchases. Reader does not receive your full payment-card details. Apple’s handling of purchase information is governed by <a href="https://www.apple.com/legal/privacy/" rel="noopener noreferrer">Apple’s Privacy Policy</a>.</p>
+
+            <h3>Usage analytics</h3>
+            <p>Reader uses Amplitude to understand app reliability and how features are used. Analytics may include app sessions; screens viewed; interactions with reading packs, narration, settings, purchases, and paywalls; reading progress and timing; pack and story identifiers; item counts; selected word-limit and image settings; and the app version, build number, and environment.</p>
+            <p>Reader does not ask for your name, email address, contacts, precise location, advertising identifier, or the contents of your own documents for analytics. Amplitude may process technical information, such as device or network information, as part of providing its service. See <a href="https://amplitude.com/privacy" rel="noopener noreferrer">Amplitude’s Privacy Notice</a> for details.</p>
+
+            <h3>How information is shared</h3>
+            <p>Reader shares purchase-related information with Apple and usage analytics with Amplitude only as needed to provide, maintain, and improve the app. Reader does not sell personal information and does not include third-party advertising or use information for cross-app tracking.</p>
+
+            <h3>Retention and deletion</h3>
+            <p>Reading progress and settings remain on your device until you clear them in Reader or remove the app. Removing Reader deletes its locally stored data from that device. Analytics already sent to Amplitude may be retained according to Amplitude’s retention practices.</p>
+
+            <h3>Children’s privacy</h3>
+            <p>Reader does not require an account and does not knowingly ask children to provide personal information. If you believe a child has provided personal information through the app, contact us so the concern can be reviewed.</p>
+
+            <h3>Security</h3>
+            <p>Reader limits information collection to what is used to provide and improve the app and relies on Apple’s and its service providers’ safeguards. No method of storage or transmission can be guaranteed to be completely secure.</p>
+
+            <h3>Changes to this policy</h3>
+            <p>This policy may be updated when Reader’s features or data practices change. The effective date above identifies the latest version.</p>
+
+            <h3>Contact</h3>
+            <p>For support or privacy questions, email Spencer Hall at <a href="mailto:spencerhall31@gmail.com">spencerhall31@gmail.com</a>.</p>
+        </section>
+    </main>
+
+    <footer>&copy; 2026 Spencer Hall</footer>
+</body>
+</html>

@@ -3,285 +3,182 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Reader makes reading easier with focused, word-by-word pacing, pictures, and spoken narration.">
-    <title>Reader — Read at Your Pace</title>
-    <style>
-        :root {
-            color-scheme: light dark;
-            --background: #c9dfed;
-            --surface: rgba(255, 255, 255, 0.88);
-            --text: #0a0a0a;
-            --muted: rgba(51, 51, 51, 0.72);
-            --accent: #0099ea;
-            --accent-strong: #006da6;
-            --accent-soft: #e3eef5;
-            --border: #b4d0e1;
-            --hero-start: #006da6;
-            --hero-end: #0099ea;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --background: #0a1922;
-                --surface: rgba(16, 24, 32, 0.92);
-                --text: #ffffff;
-                --muted: rgba(197, 190, 176, 0.78);
-                --accent: #33b5ff;
-                --accent-strong: #79ceff;
-                --accent-soft: #18232d;
-                --border: #263b48;
-                --hero-start: #005987;
-                --hero-end: #008ed9;
-            }
-        }
-
-        * { box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            margin: 0;
-            background:
-                radial-gradient(circle at 10% 12%, rgba(0, 153, 234, 0.18), transparent 28rem),
-                var(--background);
-            color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-            font-size: 17px;
-            line-height: 1.65;
-        }
-
-        a { color: var(--accent-strong); }
-
-        header {
-            overflow: hidden;
-            position: relative;
-            background: linear-gradient(135deg, var(--hero-start), var(--hero-end));
-            color: #ffffff;
-            padding: 1.1rem 1.25rem 5rem;
-        }
-
-        header::after {
-            content: "Aa";
-            position: absolute;
-            right: max(-1rem, calc((100vw - 1050px) / 2));
-            bottom: -4.5rem;
-            color: rgba(255, 255, 255, 0.09);
-            font-size: clamp(11rem, 28vw, 22rem);
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -0.12em;
-            pointer-events: none;
-        }
-
-        .nav, .hero, main {
-            width: min(100% - 2rem, 980px);
-            margin-inline: auto;
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .brand {
-            font-size: 1.15rem;
-            font-weight: 750;
-            letter-spacing: -0.02em;
-        }
-
-        nav a {
-            color: #ffffff;
-            margin-left: 1rem;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 0.25em;
-        }
-
-        .hero {
-            position: relative;
-            z-index: 1;
-            padding-top: clamp(4rem, 10vw, 7rem);
-        }
-
-        .eyebrow {
-            margin: 0 0 0.75rem;
-            font-size: 0.82rem;
-            font-weight: 750;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            max-width: 720px;
-            margin: 0;
-            font-size: clamp(3rem, 9vw, 6.5rem);
-            line-height: 0.95;
-            letter-spacing: -0.06em;
-        }
-
-        .hero-copy {
-            max-width: 590px;
-            margin: 1.5rem 0 0;
-            font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-        }
-
-        main { margin-block: -1.5rem 4rem; position: relative; z-index: 2; }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .feature, section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            box-shadow: 0 14px 40px rgba(10, 54, 78, 0.10);
-            backdrop-filter: blur(14px);
-        }
-
-        .feature {
-            border-radius: 18px;
-            padding: 1.35rem;
-        }
-
-        .feature-icon {
-            display: grid;
-            width: 2.5rem;
-            height: 2.5rem;
-            place-items: center;
-            border-radius: 12px;
-            background: var(--accent-soft);
-            color: var(--accent-strong);
-            font-weight: 800;
-        }
-
-        .feature h2 { margin: 0.85rem 0 0.25rem; font-size: 1.1rem; }
-        .feature p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-
-        section {
-            border-radius: 20px;
-            margin-bottom: 1.25rem;
-            padding: clamp(1.4rem, 5vw, 2.5rem);
-        }
-
-        section > h2 { margin-top: 0; font-size: clamp(1.65rem, 4vw, 2.2rem); }
-        h2, h3 { line-height: 1.25; letter-spacing: -0.025em; }
-        h3 { margin-top: 1.9rem; }
-
-        .effective-date, .muted { color: var(--muted); }
-
-        footer {
-            color: var(--muted);
-            padding: 0 1rem 2.5rem;
-            text-align: center;
-        }
-
-        @media (max-width: 700px) {
-            header { padding-bottom: 4rem; }
-            .features { grid-template-columns: 1fr; }
-            .nav { align-items: flex-start; }
-            nav { display: flex; flex-direction: column; align-items: flex-end; }
-            nav a { margin: 0; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-        }
-    </style>
+    <meta name="description" content="ADHD Reader creates a calmer reading experience with one-word Focus Mode, flexible reading views, optional pictures, and spoken narration.">
+    <meta property="og:title" content="ADHD Reader — A calmer way to read">
+    <meta property="og:description" content="Reduce visual overload with focused reading, optional pictures, spoken narration, and saved progress.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#087fbd">
+    <title>ADHD Reader — A Calmer Way to Read</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="nav">
-            <div class="brand">Reader</div>
-            <nav aria-label="Page navigation">
-            <a href="#support">Support</a>
-            <a href="#privacy">Privacy</a>
-            <a href="#terms">Terms</a>
-            </nav>
-        </div>
-
-        <div class="hero">
-            <p class="eyebrow">Read at your pace</p>
-            <h1>One word at a time.</h1>
-            <p class="hero-copy">Reader turns short stories into a calm, focused experience with adjustable pacing, optional pictures, and spoken narration.</p>
-        </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <nav class="nav container" aria-label="Main navigation">
+            <a class="brand" href="index.html" aria-label="ADHD Reader home">
+                <span class="brand-mark" aria-hidden="true">Aa</span>
+                <span>ADHD Reader</span>
+            </a>
+            <div class="nav-links">
+                <a href="#how-it-works">How it works</a>
+                <a href="#stories">Stories</a>
+                <a href="support.html">Support</a>
+                <a class="button button-small" href="https://apps.apple.com/us/app/adhd-reader/id1557040263">Get the app</a>
+            </div>
+        </nav>
     </header>
 
-    <main>
-        <div class="features" aria-label="Reader features">
-            <article class="feature">
-                <div class="feature-icon" aria-hidden="true">1</div>
-                <h2>Focused reading</h2>
-                <p>Choose how many words appear at once and move through each story without distraction.</p>
-            </article>
-            <article class="feature">
-                <div class="feature-icon" aria-hidden="true">▶</div>
-                <h2>Hear each passage</h2>
-                <p>Use the best available American English system voice for optional narration.</p>
-            </article>
-            <article class="feature">
-                <div class="feature-icon" aria-hidden="true">↗</div>
-                <h2>Keep making progress</h2>
-                <p>Return to stories already in progress and continue from where you stopped.</p>
-            </article>
-        </div>
+    <main id="main">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow">Reading with less visual noise</p>
+                    <h1>A calmer way to read.</h1>
+                    <p class="lede">ADHD Reader reduces visual overload with one-word Focus Mode, flexible reading views, optional pictures, and spoken narration.</p>
+                    <div class="hero-actions">
+                        <a class="app-store-button" href="https://apps.apple.com/us/app/adhd-reader/id1557040263" aria-label="Download ADHD Reader on the App Store">
+                            <span class="apple" aria-hidden="true">●</span>
+                            <span><small>Download on the</small>App Store</span>
+                        </a>
+                        <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+                    </div>
+                    <p class="availability">Available for iPhone, iPad, and Mac.</p>
+                </div>
 
-        <section id="support">
-            <h2>Support</h2>
-            <p>Need help with Reader, narration, access to a reading pack, or a purchase? Email <a href="mailto:spencerhall31@gmail.com">spencerhall31@gmail.com</a>.</p>
-            <p class="muted">For purchase issues, you can also use Restore Purchases from Reader’s Settings screen.</p>
+                <div class="focus-demo" aria-label="Demonstration of Focus Mode showing one word at a time">
+                    <div class="demo-window">
+                        <div class="demo-topbar">
+                            <span class="demo-label">Focus Mode</span>
+                            <span aria-hidden="true">•••</span>
+                        </div>
+                        <div class="demo-word" aria-hidden="true">wonder</div>
+                        <div class="demo-progress" aria-hidden="true"><span></span></div>
+                        <div class="demo-controls" aria-hidden="true">
+                            <span>‹</span><span class="demo-play">▶</span><span>›</span>
+                        </div>
+                    </div>
+                    <span class="orbit orbit-one" aria-hidden="true"></span>
+                    <span class="orbit orbit-two" aria-hidden="true"></span>
+                </div>
+            </div>
         </section>
 
-        <section id="privacy">
-            <h2>Privacy Policy</h2>
-            <p class="effective-date">Effective October 27, 2026</p>
-            <p>This policy explains what information Reader stores or processes, how it is used, and the choices available to you.</p>
-
-            <h3>Information stored on your device</h3>
-            <p>Reader stores your app settings, reading progress, elapsed reading time, and completed-reading achievements on your device. This information lets the app remember your preferences and help you continue a story. Reader does not require you to create an account.</p>
-
-            <h3>Narration</h3>
-            <p>Reader uses Apple’s built-in speech synthesis to read story text aloud with a voice installed on your device. Reader does not record your voice or request microphone access. Available voices and voice downloads are managed through your device’s Apple settings.</p>
-
-            <h3>Purchases</h3>
-            <p>Reader offers in-app purchases and subscriptions through Apple’s StoreKit. Apple processes payment information and provides Reader with purchase and entitlement status so the app can unlock content and restore purchases. Reader does not receive your full payment-card details. Apple’s handling of purchase information is governed by <a href="https://www.apple.com/legal/privacy/" rel="noopener noreferrer">Apple’s Privacy Policy</a>.</p>
-
-            <h3>Usage analytics</h3>
-            <p>Reader uses Amplitude only when you enable Share Anonymous Usage in the app’s Settings screen. Analytics helps us understand app reliability and how features are used. It may include app sessions; screens viewed; interactions with reading packs, narration, settings, purchases, and paywalls; reading progress and timing; pack and story identifiers; item counts; selected word-limit and image settings; and the app version, build number, and environment.</p>
-            <p>Reader does not ask for your name, email address, contacts, precise location, advertising identifier, or the contents of your own documents for analytics. Amplitude may process technical information, such as device or network information, as part of providing its service. See <a href="https://amplitude.com/privacy" rel="noopener noreferrer">Amplitude’s Privacy Notice</a> for details.</p>
-
-            <h3>Your consent and choices</h3>
-            <p>Analytics is off by default. You can enable or disable Share Anonymous Usage at any time in Reader’s Settings screen. Disabling it withdraws your consent and stops Reader from sending new analytics events. Reader’s core and paid features remain available whether or not you consent to analytics.</p>
-
-            <h3>How information is shared</h3>
-            <p>Reader shares purchase-related information with Apple and, only with your consent, usage analytics with Amplitude as needed to provide, maintain, and improve the app. We require service providers that receive information from Reader to protect it consistently with this policy and applicable privacy requirements. Reader does not sell personal information and does not include third-party advertising or use information for cross-app tracking.</p>
-
-            <h3>Retention and deletion</h3>
-            <p>Reading progress and settings remain on your device until you clear them in Reader or remove the app. Removing Reader deletes its locally stored data from that device. Analytics already sent to Amplitude is retained only as long as reasonably needed to analyze and improve Reader, after which it is deleted or de-identified.</p>
-            <p>You may request deletion of analytics information associated with your installation by emailing <a href="mailto:spencerhall31@gmail.com">spencerhall31@gmail.com</a>. Because Reader does not create an account or collect your identity, we may need information from your installation to locate responsive records, and in some cases may not be able to associate anonymous records with you.</p>
-
-            <h3>Children’s privacy</h3>
-            <p>Reader does not require an account and does not knowingly ask children to provide personal information. If you believe a child has provided personal information through the app, contact us so the concern can be reviewed.</p>
-
-            <h3>Security</h3>
-            <p>Reader limits information collection to what is used to provide and improve the app and relies on Apple’s and its service providers’ safeguards. No method of storage or transmission can be guaranteed to be completely secure.</p>
-
-            <h3>Changes to this policy</h3>
-            <p>This policy may be updated when Reader’s features or data practices change. The effective date above identifies the latest version.</p>
-
-            <h3>Contact</h3>
-            <p>For support or privacy questions, email Spencer Hall at <a href="mailto:spencerhall31@gmail.com">spencerhall31@gmail.com</a>.</p>
+        <section class="section" id="how-it-works">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Choose what helps</p>
+                    <h2>One story. Two ways to read.</h2>
+                    <p>Switch between a focused word-by-word view and a complete reading view whenever you need more or less context.</p>
+                </div>
+                <div class="mode-grid">
+                    <article class="mode-card mode-focus">
+                        <div class="mode-visual" aria-hidden="true">
+                            <span class="single-word">bright</span>
+                        </div>
+                        <div class="mode-copy">
+                            <span class="pill">Focus Mode</span>
+                            <h3>Keep attention on the word in front of you.</h3>
+                            <p>Show one word at a time and hide pictures to reduce distractions.</p>
+                        </div>
+                    </article>
+                    <article class="mode-card mode-reading">
+                        <div class="mode-visual reading-preview" aria-hidden="true">
+                            <img src="assets/bright-butterfly.png" alt="">
+                            <span>The bright butterfly danced above the garden.</span>
+                        </div>
+                        <div class="mode-copy">
+                            <span class="pill">Reading Mode</span>
+                            <h3>Bring the whole passage back into view.</h3>
+                            <p>Read complete passages and choose whether story pictures are shown.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </section>
 
-        <section id="terms">
-            <h2>Terms of Use</h2>
-            <p>Reader uses Apple’s standard End User License Agreement. Review the <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" rel="noopener noreferrer">Standard Apple Terms of Use</a>.</p>
+        <section class="section soft-section">
+            <div class="container benefits-grid">
+                <article>
+                    <span class="benefit-icon" aria-hidden="true">Aa</span>
+                    <h3>Flexible presentation</h3>
+                    <p>Choose the reading view that feels right and move through each story at your own pace.</p>
+                </article>
+                <article>
+                    <span class="benefit-icon" aria-hidden="true">▶</span>
+                    <h3>Optional narration</h3>
+                    <p>Listen with an American English voice already available on your Apple device.</p>
+                </article>
+                <article>
+                    <span class="benefit-icon" aria-hidden="true">↗</span>
+                    <h3>Your place is saved</h3>
+                    <p>Leave a story and return later without losing your reading progress.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="stories">
+            <div class="container story-layout">
+                <div class="section-heading story-heading">
+                    <p class="eyebrow">A library made for momentum</p>
+                    <h2>Short stories. Clear progress.</h2>
+                    <p>Explore illustrated reading packs, finish one page at a time, and return to anything already in progress.</p>
+                </div>
+                <div class="story-stack" aria-label="Sample ADHD Reader story packs">
+                    <figure class="story-card story-card-one">
+                        <img src="assets/bright-butterfly.png" alt="Bright Butterfly story pack artwork">
+                        <figcaption>Bright Butterfly</figcaption>
+                    </figure>
+                    <figure class="story-card story-card-two">
+                        <img src="assets/blue-sky.png" alt="Blue Sky story pack artwork">
+                        <figcaption>Blue Sky</figcaption>
+                    </figure>
+                    <figure class="story-card story-card-three">
+                        <img src="assets/clever-fox.png" alt="Clever Fox story pack artwork">
+                        <figcaption>Clever Fox</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="section trust-section">
+            <div class="container trust-grid">
+                <div>
+                    <p class="eyebrow">Built with privacy in mind</p>
+                    <h2>Start reading without creating an account.</h2>
+                </div>
+                <ul class="check-list">
+                    <li>Reading progress and settings stay on your device.</li>
+                    <li>Narration uses Apple’s built-in speech technology.</li>
+                    <li>Anonymous usage analytics are optional and off by default.</li>
+                    <li>No third-party advertising or cross-app tracking.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container cta-card">
+                <p class="eyebrow">Take the next word</p>
+                <h2>Make reading feel more manageable.</h2>
+                <p>Download ADHD Reader and choose the reading view that works for you.</p>
+                <a class="app-store-button app-store-button-light" href="https://apps.apple.com/us/app/adhd-reader/id1557040263" aria-label="Download ADHD Reader on the App Store">
+                    <span class="apple" aria-hidden="true">●</span>
+                    <span><small>Download on the</small>App Store</span>
+                </a>
+            </div>
         </section>
     </main>
 
-    <footer>&copy; 2026 Spencer Hall</footer>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div><strong>ADHD Reader</strong><p>One word at a time.</p></div>
+            <nav aria-label="Footer navigation">
+                <a href="support.html">Support</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="https://apps.apple.com/us/app/adhd-reader/id1557040263">App Store</a>
+            </nav>
+            <p class="copyright">&copy; 2026 Spencer Hall</p>
+        </div>
+    </footer>
 </body>
 </html>
